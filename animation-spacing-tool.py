@@ -1,13 +1,4 @@
-class frame:
-    def __init__(self, number, keytype, easetype = None, easeVal = None, motionID = None, division = None):
-        self.number = number
-        self.keytype = keytype
-        self.motionID = motionID
-        # for keys, extreme, anticipation, overshoot and breakdowns.
-        self.easetype = easetype  # defines distribution of inbetween spacings from one to another.
-        # for inbetweens
-        self.easeVal = easeVal # percentage of easing (for inbetweens only)
-        self.division = division # the number of the current division between keys
+
 
 class layer:
     def __init__(self, name, frames):
