@@ -8,8 +8,12 @@ class Test_Frame(unittest.TestCase):
             frame.Frame(frameNumber="invalid", keyType="key", easeType="easeOut")
 
     def test_Error_KeyTypeInvalid(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             frame.Frame(frameNumber=1, keyType="invalid_key", easeType="easeOut")
+
+    def test_Error_EaseTypeInvalid(self):
+        with self.assertRaises(ValueError):
+            frame.Frame(frameNumber=1, keyType="key", easeType="invalid")
 
     def test_Error_MotionIDRequiresInt(self):
         with self.assertRaises(TypeError):

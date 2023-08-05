@@ -1,25 +1,36 @@
 from animation import constants as c
 
 class Frame:
-    def __init__(self, frameNumber, keyType, easeType = None, easeVal = None, motionID = None, spacingCount = None):
-        if not isinstance(frameNumber, int):
-            raise TypeError("Frame Number must be a whole number.")
+    def __init__(self, frameNumber, keyType, easeType=None, easeVal=None, motionID=None, spacingCount=None):
+        self._validate_frame_number(frameNumber)
+        self._validate_key_type(keyType)
+        self._validate_motion_id(motionID)
+        self._validate_spacing_count(spacingCount)
+        self._validate_ease_type(easeType)
+
         self.frameNumber = frameNumber
-
-        if not keyType in c.KEYTYPES:
-            raise TypeError(f"Key Type must be one of these: {c.KEYTYPES}.")
         self.keyType = keyType
-
-        if not isinstance(motionID, int):
-            raise TypeError("Motion ID must be a whole number.")
+        self.easeType = easeType
         self.motionID = motionID
+        self.spacingCount = spacingCount
+        self.easeVal = easeVal
 
-        # Some keys
-        if not keyType in c.KEYTYPES:
-            raise TypeError(f"Ease Type must be one of these: {c.EASETYPES}.")
-        self.easeType = easeType  # defines distribution of inbetween spacings from one to another.
+    def _validate_frame_number(self, frameNumber):
+        if not isinstance(frameNumber, int):
+            raise TypeError("frameNumber must be an integer.")
 
-        self.spacingCount = spacingCount # the number of the current division between keys
+    def _validate_key_type(self, keyType):
+        if keyType not in c.KEYTYPES:
+            raise ValueError(f"Invalid keyType. Allowed values: {c.KEYTYPES}")
 
-        # for inbetweens
-        self.easeVal = easeVal # percentage of easing (for inbetweens only)
+    def _validate_motion_id(self, motionID):
+        if motionID is not None and not isinstance(motionID, int):
+            raise TypeError("motionID must be an integer.")
+
+    def _validate_spacing_count(self, spacingCount):
+        if spacingCount is not None and not isinstance(spacingCount, int):
+            raise TypeError("spacingCount must be an integer.")
+
+    def _validate_ease_type(self, easeType):
+        if easeType is not None and easeType not in c.EASETYPES:
+            raise ValueError(f"Invalid easeType. Allowed values: {c.EASETYPES}")
