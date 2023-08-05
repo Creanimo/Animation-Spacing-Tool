@@ -5,7 +5,7 @@ class Test_Frame(unittest.TestCase):
 
     def test_Error_FrameNumberRequiresInt(self):
         with self.assertRaises(TypeError):
-            frame.Frame(frameNumber="this is not allowed", keyType="key", easeType="easeOut")
+            frame.Frame(frameNumber="invalid", keyType="key", easeType="easeOut")
 
     def test_Error_KeyTypeInvalid(self):
         with self.assertRaises(TypeError):
@@ -21,8 +21,8 @@ class Test_Frame(unittest.TestCase):
 
     def test_Valid_FrameCreationInbetween(self):
         # Test a valid frame creation for inbetweens
-        f = frame.Frame(frameNumber=1, keyType="inbetween", easeType=None, motionID=10, spacingCount=5, easeVal=0.5)
-        self.assertEqual(f.frameNumber, 1)
+        f = frame.Frame(frameNumber=3, keyType="inbetween", easeType=None, motionID=10, spacingCount=5, easeVal=0.5)
+        self.assertEqual(f.frameNumber, 3)
         self.assertEqual(f.keyType, "inbetween")
         self.assertEqual(f.easeType, None)
         self.assertEqual(f.motionID, 10)
