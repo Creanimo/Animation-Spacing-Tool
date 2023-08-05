@@ -1,5 +1,6 @@
 
 
+"""
 class layer:
     def __init__(self, name, frames):
         self.name = name
@@ -54,3 +55,4 @@ for i in Layer1.frames:
         print(i.easeVal)
     else:
         print(i.keytype)
+"""
