@@ -1,19 +1,22 @@
-from animation import constants as c
+import constants as c
 
 class Frame:
-    def __init__(self, frameNumber, keyType, easeType=None, easeVal=None, motionID=None, spacingCount=None):
+    def __init__(self, frameNumber, keyType, easeType=None, easeVal=None, motionID=None, spacingCount=None, steps=1):
         self._validate_frame_number(frameNumber)
         self._validate_key_type(keyType)
+        self._validate_ease_type(easeType)
         self._validate_motion_id(motionID)
         self._validate_spacing_count(spacingCount)
-        self._validate_ease_type(easeType)
 
         self.frameNumber = frameNumber
         self.keyType = keyType
         self.easeType = easeType
         self.motionID = motionID
         self.spacingCount = spacingCount
+
+        # doesn't have validation yet
         self.easeVal = easeVal
+        self.steps = steps
 
     def _validate_frame_number(self, frameNumber):
         if not isinstance(frameNumber, int):
