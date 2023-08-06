@@ -39,8 +39,8 @@ class Layer:
         # getting the highest frame number
         lastFrame = self.frames[-1].frameNumber
         while currentFrame <= lastFrame:
-            if currentFrame in frameIndex.keys():
-                pass
+            if (currentFrame in frameIndex.keys()) and (frameIndex[currentFrame].keyType not in ("inbetween", "hold")):
+                print(currentFrame)
             elif currentFrame not in frameIndex.keys():
                 if (currentFrame - 1) % currentStep == 0:
                     self.frames.append(f.Frame(keyType="inbetween", frameNumber=currentFrame))
