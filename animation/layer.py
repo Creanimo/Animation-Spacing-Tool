@@ -1,5 +1,5 @@
-import constants as c
-import frame as f
+from animation import constants as c
+from animation import frame as f
 
 class Layer:
     def __init__(self, name, frames):
@@ -52,6 +52,52 @@ class Layer:
         for i in self.frames:
             print(i.frameNumber, i.keyType)
 
+def assignSpacingsEaseOut(numOfInbetweens):
+    easePercentageIncrement = 1.0 / (2 ** numOfInbetweens)
+    currentEasePercentage = 1.0
+    easePercentageValues = []
+
+    for i in range(1, numOfInbetweens + 1):
+        currentEasePercentage -= easePercentageIncrement
+        easePercentageValues.append(currentEasePercentage)
+
+    print(easePercentageValues)
+    return easePercentageValues
+
+def calculateEaseOutSpacings(totalDivisions):
+    i=1
+    currentPercentage=1.0
+    easePercentages=[]
+    while i<=totalDivisions:
+        currentPercentage = currentPercentage/2
+        easePercentages.append(currentPercentage)
+        i+=1
+    easePercentages.reverse()
+    return easePercentages
+
+def calculateEaseInSpacings(totalDivisions):
+    i=2
+    easePercentages=[0.5]
+    basePercentage=0.5
+    while i<=totalDivisions:
+        basePercentage=basePercentage/2
+        currentPercentage = easePercentages[i-2] + basePercentage
+        easePercentages.append(currentPercentage)
+        i+=1
+    return easePercentages
+
+def calculateLinearSpacings(totalDivisions):
+    basePercentage = 1.0
+    basePercentage = basePercentage / (totalDivisions + 1)
+    easePercentages = [basePercentage]
+    currentPercentage = basePercentage
+    i=2
+    while i<= totalDivisions:
+        currentPercentage += basePercentage
+        easePercentages.append(currentPercentage)
+        i+=1
+    return easePercentages
+
         
 def convertFloatToInt(number):
     if number == int(number):
@@ -59,13 +105,3 @@ def convertFloatToInt(number):
     else:
         return number
 
-def main():
-    frameKey = f.Frame(frameNumber=1, keyType="key")
-    frameBreakdown = f.Frame(frameNumber=9, keyType="breakdown")
-    frameInbetween = f.Frame(frameNumber=11, keyType="inbetween")
-    frameKey2 = f.Frame(frameNumber=17, keyType="key")
-    L = Layer(name = "Layer 1", frames = [frameKey, frameKey2, frameBreakdown, frameInbetween])
-    L.evaluateMotion()
-
-if __name__ == '__main__':
-    main()

@@ -74,5 +74,40 @@ class Test_Layer(unittest.TestCase):
         layer = l.Layer(name, frames)
         self.assertEqual(layer.frames, frames)
 
+    # Test Spacing Calculation
+
+    def test_calculateEaseOutSpacings(self):
+        # Test with totalDivisions = 5
+        result = l.calculateEaseOutSpacings(5)
+        expected = [0.03125, 0.0625, 0.125, 0.25, 0.5]
+        self.assertEqual(result, expected)
+
+        # Test with totalDivisions = 1
+        result = l.calculateEaseOutSpacings(1)
+        expected = [0.5]
+        self.assertEqual(result, expected)
+
+    def test_calculateEaseInSpacings(self):
+        # Test with totalDivisions = 5
+        result = l.calculateEaseInSpacings(5)
+        expected = [0.5, 0.75, 0.875, 0.9375, 0.96875]
+        self.assertEqual(result, expected)
+
+        # Test with totalDivisions = 1
+        result = l.calculateEaseInSpacings(1)
+        expected = [0.5]
+        self.assertEqual(result, expected)
+
+    def test_calculateLinearSpacings(self):
+        # Test with totalDivisions = 5
+        result = l.calculateLinearSpacings(5)
+        expected = [0.16666666666666666, 0.3333333333333333, 0.5, 0.6666666666666666, 0.8333333333333333]
+        self.assertEqual(result, expected)
+
+        # Test with totalDivisions = 1
+        result = l.calculateLinearSpacings(1)
+        expected = [0.5]
+        self.assertEqual(result, expected)
+
 if __name__ == '__main__':
     unittest.main()

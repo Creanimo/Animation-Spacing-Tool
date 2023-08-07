@@ -1,3 +1,20 @@
+from animation import frame as f
+from animation import layer as l
+
+
+def main():
+    frameKey = f.Frame(frameNumber=1, keyType="key")
+    frameBreakdown = f.Frame(frameNumber=9, keyType="breakdown")
+    frameInbetween = f.Frame(frameNumber=11, keyType="inbetween")
+    frameKey2 = f.Frame(frameNumber=17, keyType="key")
+    L = l.Layer(name = "Layer 1", frames = [frameKey, frameKey2, frameBreakdown, frameInbetween])
+    L.evaluateMotion()
+    print(l.calculateEaseInSpacings(5))
+    print(l.calculateEaseOutSpacings(5))
+    print(l.calculateLinearSpacings(5))
+
+if __name__ == '__main__':
+    main()
 
 
 """

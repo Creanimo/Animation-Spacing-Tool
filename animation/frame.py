@@ -1,4 +1,4 @@
-import constants as c
+from animation import constants as c
 
 class Frame:
     def __init__(self, frameNumber, keyType, easeType=None, easeVal=None, motionID=None, spacingCount=None, steps=1):
