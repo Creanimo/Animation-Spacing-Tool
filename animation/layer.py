@@ -1,3 +1,4 @@
+import json
 from animation import constants as c
 from animation import frame as f
 
@@ -51,6 +52,50 @@ class Layer:
         self.sortFrames()
         for i in self.frames:
             print(i.frameNumber, i.keyType)
+
+    def convertToJSON(self):
+        frames_dict = {}
+        for frame in self.frames:
+            frame_number = frame.frameNumber
+            frame_dict = {
+                "keyType": frame.keyType,
+                "easeType": frame.easeType,
+                "easeVal": frame.easeVal,
+                "motionID": frame.motionID,
+                "spacingCount": frame.spacingCount,
+                "steps": frame.steps
+            }
+            frames_dict[frame_number] = frame_dict
+
+        layer_dict = {
+            "name": self.name,
+            "frames": frames_dict
+        }
+
+        return json.dumps(layer_dict, indent=4)
+    
+def JSONtoLayer(jsonString):
+    layer_data = json.loads(jsonString)
+
+    name = layer_data.get("name")
+    frames_dict = layer_data.get("frames", {})
+
+    frames = []
+    for frame_number, frame_dict in frames_dict.items():
+        frame = Frame(
+            frameNumber=int(frame_number),
+            keyType=frame_dict.get("keyType"),
+            easeType=frame_dict.get("easeType"),
+            easeVal=frame_dict.get("easeVal"),
+            motionID=frame_dict.get("motionID"),
+            spacingCount=frame_dict.get("spacingCount"),
+            steps=frame_dict.get("steps", 1)
+        )
+        frames.append(frame)
+
+    layer = Layer(name, frames)
+    return layer
+
 
 def assignSpacingsEaseOut(numOfInbetweens):
     easePercentageIncrement = 1.0 / (2 ** numOfInbetweens)

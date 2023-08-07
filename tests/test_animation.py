@@ -1,4 +1,5 @@
 import unittest
+import json
 from animation import frame as f
 from animation import layer as l
 
@@ -108,6 +109,60 @@ class Test_Layer(unittest.TestCase):
         result = l.calculateLinearSpacings(1)
         expected = [0.5]
         self.assertEqual(result, expected)
+
+    # JSON
+
+    def test_layerUnprocessedToJSON(self):
+        self.maxDiff = None
+        frameKey = f.Frame(frameNumber=1, keyType="key", easeType="easeOut")
+        frameBreakdown = f.Frame(frameNumber=9, keyType="breakdown", easeType="easeIn")
+        frameInbetween = f.Frame(frameNumber=11, keyType="inbetween")
+        frameKey2 = f.Frame(frameNumber=17, keyType="key", easeType="easeOut")
+        L = l.Layer(name = "Layer1", frames = [frameKey, frameKey2, frameBreakdown, frameInbetween])
+        result = L.convertToJSON()
+        expected = """{
+            "name": "Layer1",
+            "frames": {
+                "1": {
+                    "keyType": "key",
+                    "easeType": "easeOut",
+                    "easeVal": null,
+                    "motionID": null,
+                    "spacingCount": null,
+                    "steps": 1
+                },
+                "17": {
+                    "keyType": "key",
+                    "easeType": "easeOut",
+                    "easeVal": null,
+                    "motionID": null,
+                    "spacingCount": null,
+                    "steps": 1
+                },
+                "9": {
+                    "keyType": "breakdown",
+                    "easeType": "easeIn",
+                    "easeVal": null,
+                    "motionID": null,
+                    "spacingCount": null,
+                    "steps": 1
+                },
+                "11": {
+                    "keyType": "inbetween",
+                    "easeType": null,
+                    "easeVal": null,
+                    "motionID": null,
+                    "spacingCount": null,
+                    "steps": 1
+                }
+            }
+        }
+        """
+         # Parse JSON strings into Python dictionaries
+        result_dict = json.loads(result)
+        expected_dict = json.loads(expected)
+
+        self.assertEqual(result_dict, expected_dict)
 
 if __name__ == '__main__':
     unittest.main()
