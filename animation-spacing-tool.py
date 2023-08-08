@@ -3,18 +3,19 @@ from animation import layer as l
 
 
 def main():
-    frameKey = f.Frame(frameNumber=1, keyType="key", easeType="easeOut")
-    frameBreakdown = f.Frame(frameNumber=9, keyType="breakdown", easeType="easeIn")
-    frameInbetween = f.Frame(frameNumber=11, keyType="inbetween")
-    frameKey2 = f.Frame(frameNumber=17, keyType="key", easeType="easeOut")
-    L = l.Layer(name = "Layer1", frames = [frameKey, frameKey2, frameBreakdown, frameInbetween])
-    # L.evaluateMotion()
-    print(l.calculateEaseInSpacings(5))
-    print(l.calculateEaseOutSpacings(5))
-    print(l.calculateLinearSpacings(5))
-    jsonOutput = L.convertToJSON()
-    with open("layer.json", "w") as json_file:
-        json_file.write(jsonOutput)
+    frameKey = f.Frame(frameNumber=1, keyType="key", easeType="easeOut", steps=2)
+    frameBreakdown = f.Frame(frameNumber=11, keyType="breakdown", easeType="easeIn", steps=2)
+    frameInbetween = f.Frame(frameNumber=13, keyType="inbetween")
+    frameKey2 = f.Frame(frameNumber=19, keyType="key", easeType="easeOut", steps = 2)
+    frameBreakdown2 = f.Frame(frameNumber=25, keyType="breakdown", easeType="easeIn")
+    L = l.Layer(name = "Layer1", frames = [frameKey, frameKey2, frameBreakdown2, frameBreakdown, frameInbetween])
+    L.evaluateMotion()
+    # print(l.calculateEaseInSpacings(5))
+    print(l.calculateEaseOutSpacings(7))
+    # print(l.calculateLinearSpacings(5))
+    # jsonOutput = L.convertToJSON()
+    # with open("layer.json", "w") as json_file:
+    #    json_file.write(jsonOutput)
 
 if __name__ == '__main__':
     main()

@@ -26,19 +26,33 @@ class Layer:
         newOrder = sorted(toSort, key=lambda x: x.frameNumber)
         self.frames = newOrder
             
-    def evaluateMotion(self):
+    def evaluateMotion(self, startFrame=1):
         self.sortFrames()
-
         # making an index of frames by frame number
         frameIndex = {}
         for i in self.frames:
             frameIndex[i.frameNumber] = i
 
+        # getting the highest frame number
+        lastFrame = self.frames[-1].frameNumber
+
+        current_major_keyframe = None
+        for frame in self.frames:
+            if frame.keyType in c.KEYTYPES_MOTIONEND:
+                if current_major_keyframe is None:
+                    current_major_keyframe = frame
+                else:
+                    spacing_count = (frame.frameNumber - current_major_keyframe.frameNumber)  // current_major_keyframe.steps - 1
+                    current_major_keyframe.spacingCount = spacing_count
+                    current_major_keyframe = frame
+
+
+        
+        """
         currentFrame = 1
         currentStep = 2
         currentSpacingCount = 0
-        # getting the highest frame number
-        lastFrame = self.frames[-1].frameNumber
+        
         while currentFrame <= lastFrame:
             if (currentFrame in frameIndex.keys()) and (frameIndex[currentFrame].keyType not in ("inbetween", "hold")):
                 print(currentFrame)
@@ -50,8 +64,10 @@ class Layer:
             currentFrame += 1
 
         self.sortFrames()
+        """
+        
         for i in self.frames:
-            print(i.frameNumber, i.keyType)
+            print(i.frameNumber, i.keyType, i.spacingCount)
 
     def convertToJSON(self):
         frames_dict = {}
