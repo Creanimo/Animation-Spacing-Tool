@@ -33,9 +33,6 @@ class Layer:
         for i in self.frames:
             frameIndex[i.frameNumber] = i
 
-        # getting the highest frame number
-        lastFrame = self.frames[-1].frameNumber
-
         current_major_keyframe = None
         for frame in self.frames:
             if frame.keyType in c.KEYTYPES_MOTIONEND:
@@ -46,28 +43,44 @@ class Layer:
                     current_major_keyframe.spacingCount = spacing_count
                     current_major_keyframe = frame
 
-
+        # getting the highest frame number
+        lastFrame = self.frames[-1].frameNumber
         
-        """
         currentFrame = 1
-        currentStep = 2
-        currentSpacingCount = 0
+        currentStep = 1
+        currentSpacingCount = None
         
         while currentFrame <= lastFrame:
-            if (currentFrame in frameIndex.keys()) and (frameIndex[currentFrame].keyType not in ("inbetween", "hold")):
-                print(currentFrame)
+            if (currentFrame in frameIndex.keys()) and (frameIndex[currentFrame].keyType in c.KEYTYPES_MOTIONEND) and currentFrame != lastFrame:
+                currentMajorKeyframe = frameIndex[currentFrame]
+                print("Major KF:", currentMajorKeyframe.frameNumber, "spacingCount:", currentMajorKeyframe.spacingCount, "steps:", currentMajorKeyframe.steps)
+                currentSpacingCount = currentMajorKeyframe.spacingCount
+                currentStep = currentMajorKeyframe.steps
+                currentEaseType = currentMajorKeyframe.easeType
+                match currentEaseType:
+                    case "easeOut":
+                        currentEaseValues = calculateEaseOutSpacings(currentSpacingCount)
+                    case "easeIn":
+                        currentEaseValues = calculateEaseInSpacings(currentSpacingCount)
+                    case "linear":
+                        currentEaseValues = calculateLinearSpacings(currentSpacingCount)
             elif currentFrame not in frameIndex.keys():
-                if (currentFrame - 1) % currentStep == 0:
-                    self.frames.append(f.Frame(keyType="inbetween", frameNumber=currentFrame))
+                if  (currentFrame - 1) % currentStep == 0:
+                    easeValue = currentEaseValues[0]
+                    self.frames.append(f.Frame(keyType="inbetween", frameNumber=currentFrame, easeVal=easeValue))
+                    currentEaseValues.remove(currentEaseValues[0])
                 else:
                     self.frames.append(f.Frame(keyType="hold", frameNumber=currentFrame))
             currentFrame += 1
+        # catch last frame which could be a major key with no spacing count
+        if (currentFrame in frameIndex.keys()) and (frameIndex[currentFrame].keyType in c.KEYTYPES_MOTIONEND):
+            pass
 
         self.sortFrames()
-        """
+        
         
         for i in self.frames:
-            print(i.frameNumber, i.keyType, i.spacingCount)
+            print("result fr", i.frameNumber, "keyType", i.keyType, "spacingCount:", i.spacingCount, "easeType:", i.easeType, "easeVal:", i.easeVal, "steps:", i.steps)
 
     def convertToJSON(self):
         frames_dict = {}
@@ -112,18 +125,6 @@ def JSONtoLayer(jsonString):
     layer = Layer(name, frames)
     return layer
 
-
-def assignSpacingsEaseOut(numOfInbetweens):
-    easePercentageIncrement = 1.0 / (2 ** numOfInbetweens)
-    currentEasePercentage = 1.0
-    easePercentageValues = []
-
-    for i in range(1, numOfInbetweens + 1):
-        currentEasePercentage -= easePercentageIncrement
-        easePercentageValues.append(currentEasePercentage)
-
-    print(easePercentageValues)
-    return easePercentageValues
 
 def calculateEaseOutSpacings(totalDivisions):
     i=1

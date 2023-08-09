@@ -11,7 +11,7 @@ def main():
     L = l.Layer(name = "Layer1", frames = [frameKey, frameKey2, frameBreakdown2, frameBreakdown, frameInbetween])
     L.evaluateMotion()
     # print(l.calculateEaseInSpacings(5))
-    print(l.calculateEaseOutSpacings(7))
+    # print(l.calculateEaseOutSpacings(7))
     # print(l.calculateLinearSpacings(5))
     # jsonOutput = L.convertToJSON()
     # with open("layer.json", "w") as json_file:
