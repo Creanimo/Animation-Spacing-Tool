@@ -1,7 +1,7 @@
 from animation import constants as c
 
 class Frame:
-    def __init__(self, frameNumber, keyType, easeType=None, easeVal=None, motionID=None, spacingCount=None, steps=None):
+    def __init__(self, frameNumber, keyType, easeType=None, easeVal=None, motionID=None, spacingCount=None, steps=1):
         self._validate_frame_number(frameNumber)
         self._validate_key_type(keyType)
         self._validate_ease_type(easeType)

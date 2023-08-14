@@ -14,25 +14,28 @@ class XSheetTable(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-        numColumns = 1 + 2 * len(layers)
-        numRows = max([len(layer.frames) for layer in layers])
+        numColumns = 1 + 2 * len(layers) # frame column + 2 columns per payer
+        numRowsMax = max([len(layer.frames) for layer in layers]) # figures out the maximum numbers of rows
 
-        self.tableWidget = QTableWidget(numRows + 1, numColumns)
+        self.tableWidget = QTableWidget(numRowsMax + 1, numColumns) # + 1 row for the "add frame" buttons
         layout.addWidget(self.tableWidget)
 
         self.populate_table()
 
     def populate_table(self):
         numColumns = 1 + 2 * len(self.layers)
-        numRows = max([len(layer.frames) for layer in self.layers])
+        numRowsPerColumn = [len(layer.frames) for layer in layers]
+        numRowsMax = max(numRowsPerColumn)
+        numRowsPerColumn.insert(0, numRowsMax) # adding frame column length
+        # TO DO: Still need to double the columns for the layers
 
-        self.tableWidget.setRowCount(numRows + 1)  # +1 for the buttons row
+        self.tableWidget.setRowCount(numRowsMax + 1)  # + 1 row for the "add frame" buttons
         self.tableWidget.setColumnCount(numColumns)
 
         headers = ["Frame"] + [f"{layer.name} Key Type" for layer in self.layers] + [f"{layer.name} Ease Type" for layer in self.layers]
         self.tableWidget.setHorizontalHeaderLabels(headers)
 
-        for row in range(numRows):
+        for row in range(numRowsMax):
             for col in range(numColumns):
                 if col == 0:
                     # Fill in the frame numbers in the first column
@@ -67,7 +70,7 @@ class XSheetTable(QMainWindow):
         for col, layer in enumerate(self.layers, start=1):
             button = QPushButton("+")
             button.clicked.connect(lambda clicked_layer=layer: self.add_new_frame(clicked_layer))
-            self.tableWidget.setCellWidget(numRows, col if col % 2 == 1 else col + 1, button)
+            self.tableWidget.setCellWidget(numRowsMax, col if col % 2 == 1 else col + 1, button)
 
     def add_new_frame(self, layer):
         new_frame_number = len(layer.frames) + 1

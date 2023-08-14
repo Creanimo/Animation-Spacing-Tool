@@ -5,12 +5,14 @@ from xsheet import table as uix
 if __name__ == "__main__":
     # Create some sample data
     layer1 = l.Layer("Layer 1",[])
-    layer1.frames.append(f.Frame(1, "key"))
-    layer1.frames.append(f.Frame(2, "breakdown", "easeOut"))
-    layer1.frames.append(f.Frame(3, "anticipation", "easeIn"))
+    layer1.frames.append(f.Frame(1, "key", "easeOut"))
+    layer1.frames.append(f.Frame(7, "breakdown", "easeIn"))
+    layer1.frames.append(f.Frame(11, "anticipation", "easeOut"))
+    layer1.evaluateMotion()
     layer2 = l.Layer("Layer 2",[])
     layer2.frames.append(f.Frame(1, "key", "easeOut"))
-    layer2.frames.append(f.Frame(2, "breakdown"))
+    layer2.frames.append(f.Frame(13, "breakdown"))
+    layer2.evaluateMotion()
     layers = [layer1, layer2]
 
     # Create the application and main window

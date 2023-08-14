@@ -58,6 +58,8 @@ class Layer:
                 currentStep = currentMajorKeyframe.steps
                 currentEaseType = currentMajorKeyframe.easeType
                 match currentEaseType:
+                    case "hold":
+                        currentEaseValues = 0
                     case "easeOut":
                         currentEaseValues = calculateEaseOutSpacings(currentSpacingCount)
                     case "easeIn":
